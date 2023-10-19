@@ -1,0 +1,15 @@
+{
+  "Mapsize": {
+    "x": 10,
+    "y": 10,
+    "magnitude": 14.1421356,
+    "sqrMagnitude": 200
+  },
+  "Mapdata": [],
+  "PlayerPosition": {
+    "x": 0,
+    "y": 0,
+    "magnitude": 0.0,
+    "sqrMagnitude": 0
+  }
+}
