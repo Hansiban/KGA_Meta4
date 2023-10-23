@@ -20,6 +20,14 @@ public class PlayerInput : MonoBehaviour
     private void Update()
     {
         //게임오버를 만들면 못움직이도록 선언
+        if (GameManager.Instance != null && GameManager.Instance.isGameover)
+        {
+            Move_Value = 0;
+            Rotate_Value = 0;
+            isFire = false;
+            isReload = false;
+            return;
+        }
         Move_Value = Input.GetAxis(MoveAxis_name);
         Rotate_Value = Input.GetAxis(Rotate_name);
         isFire = Input.GetButton(Fire);

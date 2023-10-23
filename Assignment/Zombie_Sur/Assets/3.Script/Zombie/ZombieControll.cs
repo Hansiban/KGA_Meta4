@@ -18,13 +18,13 @@ public class ZombieControll : LivingEntity
 
     private Animator zombie_ani;
     private AudioSource zombie_audio;
+    private Renderer zombie_renderer;
 
     /* 나중에 컴포넌트 추가 */
     [Header("Info")]
     [SerializeField] private float damage = 20f;
     [SerializeField] private float TimebetAttack = 0.5f;
     private float LastAttackTimebet;
-
     private bool isTarget
     {
         get
@@ -42,8 +42,20 @@ public class ZombieControll : LivingEntity
         TryGetComponent(out agent);
         TryGetComponent(out zombie_ani);
         TryGetComponent(out zombie_audio);
+        /*
+         GetComponentInChildren -> 특정 컴포넌트의 하위 객체(자식) 중 가장 선두에 있는 컴포넌트 반환
+         GetComponentsInChildren -> 특정 컴포넌트의 하위 객체(자식) 들의 모든 컴포넌트를 반환(배열로 반환, 손자까지 반환)
+         */
+        zombie_renderer = GetComponentInChildren<Renderer>();
     }
+    public void Setup(ZombieData data)
+    {
+        StartHealth = data.Health;
+        damage = data.Damage;
 
+        agent.speed = data.Speed;
+        zombie_renderer.material.color = data.Skincolor;
+    }
     public override void OnDamage(float Damage, Vector3 hitposition, Vector3 hitNomal)
     {
         /*
