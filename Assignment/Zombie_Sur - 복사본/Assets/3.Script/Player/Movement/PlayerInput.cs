@@ -13,7 +13,7 @@ public class PlayerInput : MonoBehaviour
     //getAxis => 반환형 float
     public float Move_Value { get; private set; }
     public float Rotate_Value { get; private set; }
-    
+
     //GetButton => 반환형 bool
     public bool isFire { get; private set; }
     public bool isReload { get; private set; }

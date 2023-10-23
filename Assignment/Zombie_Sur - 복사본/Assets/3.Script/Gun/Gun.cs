@@ -106,6 +106,8 @@ public class Gun : MonoBehaviour
         //ÃÑÀ» ½ð ÀÌÆåÆ® ÇÃ·¹ÀÌ
         StartCoroutine(ShotEffect(Hitposition));
         Magammo--;
+        //ÃÑ¾Ë¾÷µ«
+        UIController.instance.Update_Ammotext(Magammo, ammoRemain);
         if (Magammo <= 0)
         {
             state = State.Empty;
@@ -160,6 +162,8 @@ public class Gun : MonoBehaviour
         Magammo += ammofill;
         ammoRemain -= ammofill;
         state = State.Ready;
+        //ÃÑ¾Ë¾÷µ«
+        UIController.instance.Update_Ammotext(Magammo, ammoRemain);
     }
 
 }
