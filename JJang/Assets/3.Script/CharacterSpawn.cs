@@ -9,6 +9,7 @@ public class CharacterSpawn : MonoBehaviour
      <캐릭터 스폰 실험용>
      */
     #endregion
+
     [Header("캐릭터 스폰")]
     [SerializeField] private GameObject[] characters; //캐릭터 오브젝트 배열
     [SerializeField] private Transform spawnPosition;

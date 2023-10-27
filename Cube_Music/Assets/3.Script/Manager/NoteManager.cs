@@ -19,6 +19,8 @@ public class NoteManager : MonoBehaviour
     [SerializeField] private Transform noteSpawner;
     [SerializeField] private GameObject NotePrefabs;
 
+    private bool isActive = true;
+
     [SerializeField] private TimingManager timingManager;
     [SerializeField] private EffectManager effectManager;
     [SerializeField] private ComboManager comboManager;
@@ -33,20 +35,25 @@ public class NoteManager : MonoBehaviour
     {
         currentTime += Time.deltaTime;
         //if(0.5초)
-        if (currentTime >= (60d / BPM))
+        if (isActive)
         {
-            //GameObject noteobj = Instantiate(NotePrefabs, noteSpawner.position, Quaternion.identity);
-            //noteobj.transform.SetParent(this.transform);
+            if (currentTime >= (60d / BPM))
+            {
+                //GameObject noteobj = Instantiate(NotePrefabs, noteSpawner.position, Quaternion.identity);
+                //noteobj.transform.SetParent(this.transform);
 
-            //큐에서 꺼냄
-            GameObject note = ObjectPooling.instance.nodeQueue.Dequeue();
-            note.transform.position = noteSpawner.position;
-            note.SetActive(true);
-            currentTime -= (60d / BPM);
+                //큐에서 꺼냄
+                GameObject note = ObjectPooling.instance.nodeQueue.Dequeue();
+                note.transform.position = noteSpawner.position;
+                note.SetActive(true);
+                currentTime -= (60d / BPM);
 
-            //타이밍 매니저의 순서대로 넣음.
-            timingManager.BoxNote_List.Add(note);
+                //타이밍 매니저의 순서대로 넣음.
+                timingManager.BoxNote_List.Add(note);
+            }
         }
+
+
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -60,6 +67,7 @@ public class NoteManager : MonoBehaviour
                     Debug.Log("Miss");
                     effectManager.Judgement_Effect(4);
                     comboManager.ResetCombo();
+                    timingManager.Judgement_miss();
 
 
                 }
@@ -69,6 +77,17 @@ public class NoteManager : MonoBehaviour
             ObjectPooling.instance.nodeQueue.Enqueue(col.gameObject);
             col.gameObject.SetActive(false);
         }
+    }
+    public void Remove_note()
+    {
+        isActive = false;
+        for (int i = 0; i < timingManager.BoxNote_List.Count; i++)
+        {
+            timingManager.BoxNote_List[i].SetActive(false);
+            ObjectPooling.instance.nodeQueue.Enqueue(timingManager.BoxNote_List[i]);
+        }
+        timingManager.BoxNote_List.Clear();
+
     }
 
 }

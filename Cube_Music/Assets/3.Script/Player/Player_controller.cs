@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player_controller : MonoBehaviour
 {
+    public static bool isCanpressKey = true;
     [Header("이동")]
     [SerializeField] private float movespeed = 3f;
     //키보드 입력에 따른 방향
@@ -17,6 +18,10 @@ public class Player_controller : MonoBehaviour
     [SerializeField] private Vector3 input_RotDirection = new Vector3();
     //실제로 회전하는 방향
     [SerializeField] private Quaternion dest_Rot = new Quaternion();
+    public Vector3 Dest_Pos
+    {
+        get { return dest_pos; }
+    }
 
     [SerializeField] private Transform fake_cube;
     [SerializeField] private Transform real_cube;
@@ -48,7 +53,7 @@ public class Player_controller : MonoBehaviour
         //입력 했을 타이밍에 판정
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.A)|| Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
         {
-            if (isCanMove && isCanRot)
+            if (isCanMove && isCanRot && isCanpressKey)
             {
                 AudioManager.instance.PlaySFX("Clap");
                 //플레이어 움직임 목표값 계산

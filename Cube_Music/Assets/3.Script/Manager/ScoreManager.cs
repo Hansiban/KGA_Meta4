@@ -27,4 +27,8 @@ public class ScoreManager : MonoBehaviour
         score_text.text = string.Format("{0:#,##0}", current_Score);
         ani.SetTrigger(aniKey);
     }
+    public int Get_Score()
+    {
+        return current_Score;
+    }
 }

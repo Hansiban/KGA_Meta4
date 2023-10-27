@@ -12,9 +12,13 @@ public class TimingManager : MonoBehaviour
     [SerializeField] private RectTransform center;
     public List<GameObject> BoxNote_List = new List<GameObject>();
 
+    private int[] judgement_Record = new int[5];
+
     [SerializeField] private EffectManager effectManager;
     [SerializeField] private ComboManager comboManager;
     [SerializeField] private ScoreManager scoreManager;
+    [SerializeField] private Player_controller player;
+    [SerializeField] private StageControll stageControll;
     private void Start()
     {
         //------------------------------------------------
@@ -22,6 +26,8 @@ public class TimingManager : MonoBehaviour
         effectManager = FindObjectOfType<EffectManager>();
         comboManager = FindObjectOfType<ComboManager>();
         scoreManager = FindObjectOfType<ScoreManager>();
+        player = FindObjectOfType<Player_controller>();
+        stageControll = FindObjectOfType<StageControll>();
 
         //°è»ê--------------------------------------------
         timingBox = new Vector2[timmingRect.Length];
@@ -39,8 +45,33 @@ public class TimingManager : MonoBehaviour
                 center.localPosition.x + timmingRect[i].rect.width / 2
                 );
         }
+        Initialized_record();
     }
-
+    public bool Check_canNext_Plate()
+    {
+        if (Physics.Raycast(player.Dest_Pos, Vector3.down, out RaycastHit hit, 1.1f))
+        {
+            if (hit.transform.CompareTag("BasicPlate"))
+            {
+                if (hit.transform.TryGetComponent(out BasicPlate p))
+                {
+                    if (p.flag)
+                    {
+                        p.flag = false;
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    public void Initialized_record()
+    {
+        for (int i = 0; i < judgement_Record.Length; i++)
+        {
+            judgement_Record[i] = 0;
+        }
+    }
     public bool Check_Timming()
     {
         for (int i = 0; i < BoxNote_List.Count; i++)
@@ -63,21 +94,33 @@ public class TimingManager : MonoBehaviour
                     }
                     Debug.Log(Debug_note(x));
                     effectManager.Notehit_Effect();
-                    effectManager.Judgement_Effect(x);
-                    scoreManager.AddScore(x);
-
-                    if (x < 3)
+                    if (Check_canNext_Plate())
                     {
-                        comboManager.Addcombo();
+                        effectManager.Judgement_Effect(x);
+                        stageControll.ShowNextPlate();
+                        scoreManager.AddScore(x);
+                        if (x < 3)
+                        {
+                            comboManager.Addcombo();
+                        }
+                        else
+                        {
+                            comboManager.ResetCombo();
+                        }
+                        judgement_Record[x]++;
                     }
                     else
                     {
+                        effectManager.Judgement_Effect(5);
                         comboManager.ResetCombo();
                     }
+
                     return true;
                 }
             }
         }
+        comboManager.ResetCombo();
+        Judgement_miss();
         return false;
     }
     public string Debug_note(int i)
@@ -96,6 +139,15 @@ public class TimingManager : MonoBehaviour
             default:
                 return string.Empty;
         }
+    }
+    public void Judgement_miss()
+    {
+        judgement_Record[4]++;
+    }
+
+    public int[] Get_judgement_Record()
+    {
+        return judgement_Record;
     }
 
 }
