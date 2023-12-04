@@ -97,16 +97,16 @@ public class ServerChecker : MonoBehaviour
 
     void Start()
     {
-        //type = License_type();
+        type = License_type();
 
-        //if (type.Equals(Type.Server))
-        //{
-        //    Start_Server();
-        //}
-        //else
-        //{
-        //    Start_Client();
-        //}
+        if (type.Equals(Type.Server))
+        {
+            Start_Server();
+        }
+        else
+        {
+            Start_Client();
+        }
     }
 
     public void Start_Game()
