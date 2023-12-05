@@ -25,3 +25,13 @@ MonoBehaviour:
     m_SpecifySize: 0
     m_Name: simson
     m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5277430710507784346
+      m_GuidHigh: 5854914396295494325
+    m_SerializedTextureGuid:
+      m_GuidLow: 1807302299098194534
+      m_GuidHigh: 524694496548764331
+    m_Size: {x: 0, y: 0}
+    m_SpecifySize: 0
+    m_Name: chiikawa
+    m_Texture: {fileID: 0}
